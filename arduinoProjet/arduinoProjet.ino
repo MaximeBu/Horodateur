@@ -10,9 +10,8 @@ void setup() {
 
 void loop() {
   yValue = analogRead(yAxisPin); // Lecture des données du Joystick
-  yValue = map(yValue, 0, 1023, 0, 180); // Formatage des données vers un angle entre 0 et 180
-
-  Serial.println(yAxisPin + ":" +yValue);
+  yValue = map(yValue, 0, 1023, 0, 180); // Formatage des données vers un a>
+  Serial.println(yValue);
 
   delay(200);
 }
