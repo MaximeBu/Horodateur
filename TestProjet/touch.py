@@ -2,27 +2,38 @@ from gpiozero import Button
 from signal import pause
 
 # Function called when the sensor is touched
-def touched():
+def touched(num):
     # Print a message indicating the sensor is touched
-    print("Touched!")
+    print(f"Touched! {num}")
 
 # Function called when the sensor is not touched
-def not_touched():
+def not_touched(num):
     # Print a message indicating the sensor is not touched
-    print("Not touched!")
+    print(f"Not touched! {num}")
 
 # Initialize a Button object for the touch sensor
 # GPIO 17: pin connected to the sensor
 # pull_up=None: disable internal pull-up/pull-down resistors
 # active_state=True: high voltage is considered the active state
-numOfPins = 10
-touchPins = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
-for pin in numOfPins:
-    Button.setmode(Button.BCM)
-    Button.setup(touchPins[pin],pull_up=None,active_state=True )
-    if touchPins[pin].when_pressed == touched:
-        print(pin)
-        # lcd.text(pin)
+touchPins = {
+    1: 17, 
+    2: 27, 
+    3: 22, 
+    4: 11, 
+    5: 13, 
+    6: 15, 
+    7: 19, 
+    8: 21, 
+    9: 23, 
+    0: 18
+}
+
+
+def touchSensors():
+    for num, pin in touchPins.items():
+        button = Button(pin, pull_up=True)
+        button.when_pressed = lambda n=num: touched(n)
+        button.when_released = lambda n=num: not_touched(n)
 
 # Assign functions to sensor events
 
