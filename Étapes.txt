@@ -2,16 +2,9 @@ Capteurs:
 
 bouton back: Plug, Config, Mi-code
 bouton next: Plug, Config, Mi-code
-LCD: Plug, config, mi-code
+# LCD: Plug, Config, Code
 # Caméra: Plug, Config, Code 
-Buzzer: Plug, Config, Mi-code
-Led: Plug, Config, Mi-code
-Touch(9): Mi-plug, No-config, Mi-code
-# Joystick: Plug, config, Code
-
-
-To Plug: Touch(9)
-
-To Config: Touch(9)
-
-To Code: All 
+# Buzzer: Plug, Config, Code
+# Led: Plug, Config, Code
+# Touch(9): Plug, Config, Code
+# Joystick: Plug, Config, Code
