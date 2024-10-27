@@ -22,7 +22,12 @@ menuPosition = lastMenuPosition
 # Valeur du code entré
 code = ""
 
+#Affichage de l'heure
+heure = lcd.getTime()
+lastTime = heure
+
 # cam.run_camera()
+
 # Affichage de  la page menu initiale
 lcd.show_menu_start()
 led.turn_off()
@@ -30,6 +35,10 @@ led.turn_off()
 # loop until manually stopped
 while True:
   try:
+    temps = lcd.getTime()
+    if temps != heure:
+      lastTime = heure
+      heure = temps
     # Activation des capteurs touch
     touch.run()
     # Récupération du statut de la led
@@ -47,6 +56,11 @@ while True:
     boutonNext, boutonBack = button.get_buttons_state()
 
     if menuOption == None:
+      # Changement d'heure dynamiquement sur la page pricipale
+      if heure != lastTime and menuPosition == 1
+        lcd.show_menu_start()
+        lastTime = heure
+
       # Récupération de la valeur de l'axe y du joystick
       J = joystick.get_y_axis_value()
 
@@ -102,7 +116,7 @@ while True:
           lcd.show_menu_start()
         code = ""
 
-    print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext)
+    print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext, ", heure:", heure)
     sleep(0.2)
   except KeyboardInterrupt:
     break  # stop the while loop
