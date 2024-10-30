@@ -81,10 +81,10 @@ while True:
         menuOption = touchValue
 
       # Déroulement vers le bas du menu
-      if J == 180 and menuPosition < 3:
+      if J <= 180 and J >= 170 and menuPosition < 3:
         menuPosition += 1
       # Déroulement vers le haut du menu
-      elif J == 0 and menuPosition > 1:
+      elif J >= 0 and J <= 10 and menuPosition > 1:
         menuPosition -= 1
 
       # Actualisation de la page du menu
