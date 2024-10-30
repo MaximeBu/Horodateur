@@ -26,11 +26,7 @@ code = ""
 heure = lcd.getTime()
 lastTime = heure
 
-# Affichage de la date
-day = lcd.getDate()
-lastDay = day
-
-cam.run_camera()
+# cam.run_camera()
 
 # Affichage de  la page menu initiale
 lcd.show_menu_start()
@@ -39,18 +35,10 @@ led.turn_off()
 # loop until manually stopped
 while True:
   try:
-    # Récupération de l'heure
     temps = lcd.getTime()
     if temps != heure:
       lastTime = heure
       heure = temps
-
-    # Récupération de la date  
-    dayTime = lcd.getDate()
-    if day != dayTime:
-      lastDay = day
-      day = dayTime
-	    
     # Activation des capteurs touch
     touch.run()
     # Récupération du statut de la led
@@ -69,7 +57,7 @@ while True:
 
     if menuOption == None:
       # Changement d'heure dynamiquement sur la page pricipale
-      if heure != lastTime and menuPosition == 1
+      if heure != lastTime and menuPosition == 1:
         lcd.show_menu_start()
         lastTime = heure
 
@@ -111,7 +99,6 @@ while True:
 
       # Si le bouton next est appuyé et que le code n'est pas complet, la lumière rouge s'allume et le code se réinitialise
       if boutonNext == "Appuyé" and len(code) < 4:
-	lcd.show_error()
         led.red()
         code = ""
 
@@ -120,7 +107,6 @@ while True:
         nom = user.validate_user(code)
 	# Si l'utilisateur n'existe pas, il y a erreur
         if nom == "":
-	    lcd.show_error()
             led.red()
         # Si l'utilisateur existe, un message lui est affiché
         else:
@@ -130,7 +116,7 @@ while True:
           lcd.show_menu_start()
         code = ""
 
-    print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext, ", Date:", heure, " ", day)
+    print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext, ", heure:", heure)
     sleep(0.2)
   except KeyboardInterrupt:
     break  # stop the while loop
