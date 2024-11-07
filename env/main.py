@@ -1,7 +1,7 @@
 # Importations
 import serial
 from time import sleep
-import cam
+# import cam
 import joystick
 import lcd
 import buzzer
