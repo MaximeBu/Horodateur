@@ -1,7 +1,6 @@
 # Documentation: https://alivecode.ca/docs/aliot
 from aliot.aliot_obj import AliotObj
 import time
-import env.buzzer
 
 # Création de l'objet à partir du fichier de configuration
 horodateur_punch = AliotObj("horodateur-punch")
