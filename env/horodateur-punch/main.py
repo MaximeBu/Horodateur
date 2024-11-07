@@ -28,6 +28,11 @@ lastTime = heure
 
 # cam.run_camera()
 
+def menuPosition():
+  return menuPosition
+
+
+
 # Affichage de  la page menu initiale
 lcd.show_menu_start()
 led.turn_off()
