@@ -9,31 +9,24 @@ import led
 import touch
 import button
 import user
-
+import main_utils
 
 # Pin analogique du joystick
 inputPin = "A0"
-# Option choisit
-menuOption = None
-# Dernière position dans le menu
-lastMenuPosition = 1
-# Nouvelle position recu par le joystick
-menuPosition = lastMenuPosition
 # Valeur du code entré
 code = ""
+# Nouvelle position recu par le joystick
+menuPosition = main_utils.getMenuPosition()
+# Dernière position dans le menu
+lastMenuPosition = menuPosition
+# Option choisit
+menuOption = main_utils.getMenuOption()
 
 #Affichage de l'heure
 heure = lcd.getTime()
 lastTime = heure
 
 # cam.run_camera()
-
-def menuPosition():
-  return menuPosition
-
-def menuOption():
-  return menuOption
-
 
 # Affichage de  la page menu initiale
 lcd.show_menu_start()
@@ -61,6 +54,10 @@ while True:
     button.button_next_pressed()
     # Récupération de l'état des boutons
     boutonNext, boutonBack = button.get_buttons_state()
+    # Récupération de la valeur de l'option choisit
+    menuOption = main_utils.getMenuOption()
+    # Récupération de la valeur de la position du menu active
+    menuPosition = main_utils.getMenuPosition()
 
     if menuOption == None:
       # Changement d'heure dynamiquement sur la page pricipale
@@ -73,14 +70,16 @@ while True:
 
       # Choix du menu
       if touchValue == 1 or touchValue == 2 or touchValue == 3 or touchValue == 4:
-        menuOption = touchValue
+        main_utils.setMenuOption(touchValue)
 
       # Déroulement vers le bas du menu
       if J <= 180 and J >= 170 and menuPosition < 3:
-        menuPosition += 1
+        newMenuPosition = menuPosition + 1
+        main_utils.setMenuPosition(newMenuPosition)
       # Déroulement vers le haut du menu
       elif J >= 0 and J <= 10 and menuPosition > 1:
-        menuPosition -= 1
+        newMenuPosition = menuPosition - 1
+        main_utils.setMenuPosition(newMenuPosition)
 
       # Actualisation de la page du menu
       if menuPosition != lastMenuPosition:
@@ -98,7 +97,7 @@ while True:
 
       # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
       if boutonBack == "Appuyé" and code == "":
-        menuOption = None
+        main_utils.setMenuOption(None)
         lcd.show_menu_start()
       # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
       elif boutonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
@@ -119,7 +118,7 @@ while True:
         else:
           led.green()
           lcd.show_message(menuOption, nom)
-          menuOption = None
+          main_utils.setMenuOption(None)
           lcd.show_menu_start()
         code = ""
 

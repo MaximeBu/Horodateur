@@ -4,7 +4,7 @@ import lcd
 import joystick
 
 from aliot.aliot_obj import AliotObj
-import main
+import main_utils
 
 # Attente pour bien établir la communication avec le capteur
 time.sleep(5)
@@ -77,8 +77,8 @@ def start():
         try:
             # Obtenir les données du capteur
             joystick_value = joystick.get_y_axis_value()
-            menu_position = main.menuPosition()
-            menu_option = main.menuOption()
+            menu_position = main_utils.getMenuPosition()
+            menu_option = main_utils.getMenuOption()
             
             # Affichage
             print(f"Joystick: {joystick_value}")
