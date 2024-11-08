@@ -31,6 +31,8 @@ lastTime = heure
 def menuPosition():
   return menuPosition
 
+def menuOption():
+  return menuOption
 
 
 # Affichage de  la page menu initiale
