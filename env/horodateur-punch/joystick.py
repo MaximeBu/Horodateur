@@ -10,11 +10,15 @@ ser.flushInput()
 time.sleep(2)
 
 # Valeur de l'axe y du joystick
-yAxisValue = None
+yAxisValue = 90
 
 # Récupération de la valeur de l'axis y du joystick
 def get_y_axis_value():
   return yAxisValue
+
+def set_y_axis_value(value):
+  global yAxisValue
+  yAxisValue = value
 
 # Récupération des données dans la ligne du serial
 def read_data():
@@ -23,14 +27,14 @@ def read_data():
 
 # Lecture des donées dans le serial
 def read_from_serial():
-  global yAxisValue
 
   try:
     ser.flush()
     while True:
       if ser.in_waiting > 0:
         # Attribution de la valeur
-        yAxisValue = read_data()
+        yAxis = read_data()
+        set_y_axis_value(yAxisValue)
 
   except KeyboardInterrupt:
     print("Exiting...")

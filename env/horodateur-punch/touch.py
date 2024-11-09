@@ -14,7 +14,7 @@ touch_numero_9 = Button(13)
 touch_numero_0 = Button(19)
 
 # Valeur du bouton touché
-activeTouch= None
+activeTouchv= ""
 
 
 # Function called when the sensor is touched
@@ -30,7 +30,7 @@ def touched(num):
 # Fonction pour réinitialiser activeButton
 def set_touch_number():
   global activeTouch
-  activeTouch = None
+  activeTouch = ""
 
 
 # Fonction qui récupère la valeur du activeButton

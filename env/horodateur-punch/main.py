@@ -13,8 +13,6 @@ import main_utils
 
 # Pin analogique du joystick
 inputPin = "A0"
-# Valeur du code entré
-code = ""
 # Dernière position dans le menu
 lastMenuPosition = main_utils.getMenuPosition()
 
@@ -54,8 +52,10 @@ while True:
     menuOption = main_utils.getMenuOption()
     # Récupération de la valeur de la position du menu active
     menuPosition = main_utils.getMenuPosition()
+    # Récupération du code de l'employé
+    code = main_utils.get_code()
 
-    if menuOption == None:
+    if menuOption == "":
       # Changement d'heure dynamiquement sur la page pricipale
       if heure != lastTime and menuPosition == 1:
         lcd.show_menu_start()
@@ -88,21 +88,23 @@ while True:
       lcd.show_code_screen(code)
 
       # Si une touche est appuyé, le numéro est affiché
-      if touchValue != None and len(code) < 4:
-        code += str(touchValue)
+      if touchValue != "" and len(code) < 4:
+        newCode = code + str(touchValue)
+        main_utils.setCode(newCode)
 
       # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
       if boutonBack == "Appuyé" and code == "":
-        main_utils.setMenuOption(None)
+        main_utils.setMenuOption("")
         lcd.show_menu_start()
       # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
       elif boutonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
-        code = code[:len(code)-1]
+        newCode = code[:len(code)-1]
+        main_utils.setCode(newCode)
 
       # Si le bouton next est appuyé et que le code n'est pas complet, la lumière rouge s'allume et le code se réinitialise
       if boutonNext == "Appuyé" and len(code) < 4:
         led.red()
-        code = ""
+        main_utils.setCode("")
 
       # Si le bouton next est appuyé et que le code est remplit, le code est vérifé
       if boutonNext == "Appuyé" and len(code) == 4:
@@ -114,9 +116,9 @@ while True:
         else:
           led.green()
           lcd.show_message(menuOption, nom)
-          main_utils.setMenuOption(None)
+          main_utils.setMenuOption("")
           lcd.show_menu_start()
-        code = ""
+        main_utils.setCode("")
 
     print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext, ", heure:", heure)
     sleep(0.2)

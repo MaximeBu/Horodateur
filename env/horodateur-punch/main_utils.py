@@ -1,7 +1,9 @@
 # Option choisit
-menuOption = None
+menuOption = ""
 # Nouvelle position recu par le joystick
 menuPosition = 1
+# Valeur du code entré
+code = ""
 
 def getMenuPosition():
   return menuPosition
@@ -16,4 +18,11 @@ def setMenuOption(value):
 def setMenuPosition(value):
   global menuPosition
   menuPosition = value
+
+def getCode():
+  return code
+
+def setCode(value):
+  global code
+  code = value
   
