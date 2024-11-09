@@ -15,12 +15,8 @@ import main_utils
 inputPin = "A0"
 # Valeur du code entré
 code = ""
-# Nouvelle position recu par le joystick
-menuPosition = main_utils.getMenuPosition()
 # Dernière position dans le menu
-lastMenuPosition = menuPosition
-# Option choisit
-menuOption = main_utils.getMenuOption()
+lastMenuPosition = main_utils.getMenuPosition()
 
 #Affichage de l'heure
 heure = lcd.getTime()
