@@ -20,7 +20,7 @@ buttonNext, buttonBack = button.get_buttons_state()
 buzzer_state = buzzer.get_buzzer_state()
 led_state = led.get_led_state()
 code = main_utils.getCode()
-led_color = main_utils.getLedColor()
+led_color = led.get_led_color()
 user = user.getNom()
 
 # Attente pour bien établir la communication avec le capteur
@@ -122,7 +122,7 @@ def start():
             led_state = led.get_led_state()
             led_color = led.get_led_color()
             code = main_utils.getCode()
-            led_color = main_utils.getLedColor()
+            led_color = led.get_led_color()
             user = user.getNom()
             
             # Affichage
