@@ -15,13 +15,13 @@ from aliot.aliot_obj import AliotObj
 joystick_value = joystick.get_y_axis_value()
 menu_position = main_utils.getMenuPosition()
 menu_option = main_utils.getMenuOption()
-touch = touch.get_touch_number()
+touch_num = touch.get_touch_number()
 buttonNext, buttonBack = button.get_buttons_state()
 buzzer_state = buzzer.get_buzzer_state()
 led_state = led.get_led_state()
 code = main_utils.getCode()
 led_color = led.get_led_color()
-user = user.getNom()
+user_n = user.getNom()
 
 # Attente pour bien établir la communication avec le capteur
 time.sleep(5)
@@ -110,17 +110,19 @@ def sendSuccess(data):
 def start():
     while True:
         try:
-            global joystick_value, menu_position, menu_option, touch, buttonNext, buttonBack, buzzer_state, led_state, code, led_color
+            global joystick_value, menu_position, menu_option, touch_num, buttonNext, buttonBack, buzzer_state, led_state, code, led_color
             # Obtenir les données du capteur
             joystick_value = joystick.get_y_axis_value()
             menu_position = main_utils.getMenuPosition()
             menu_option = main_utils.getMenuOption()
-            touch = touch.get_touch_number()
+            touch_num = touch.get_touch_number()
             buttonNext, buttonBack = button.get_buttons_state()
             buzzer_state = buzzer.get_buzzer_state()
             led_state = led.get_led_state()
             led_color = led.get_led_color()
             code = main_utils.getCode()
+            led_color = led.get_led_color()
+            user_n = user.getNom()
             led_color = led.get_led_color()
             user = user.getNom()
             
@@ -132,11 +134,11 @@ def start():
             print(f"État de la LED: {led_state}")
             print(f"Couleur de la LED: {led_color}")
 
-            if touch != "":
-                print(f"Touche appuyé: {touch}")
+            if touch_num != "":
+                print(f"Touche appuyé: {touch_num}")
 
-            if user != "":
-                print(f"Nom de l'utilisateur: {user}")
+            if user_n != "":
+                print(f"Nom de l'utilisateur: {user_n}")
 
             if code != "":
                 print(f"Code: {code}")
@@ -147,7 +149,7 @@ def start():
                 "/doc/joystick_value": joystick_value,
                 "/doc/menu_position": menu_position, 
                 "/doc/menu_option": menu_option,
-                "/doc/touch": touch,
+                "/doc/touch": touch_num,
                 "/doc/bouton_next": buttonNext,
                 "/doc/bouton_back": buttonBack,
                 "/doc/buzzer": buzzer_state,
