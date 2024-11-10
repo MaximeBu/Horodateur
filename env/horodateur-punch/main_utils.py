@@ -1,5 +1,5 @@
 # Option choisit
-menuOption = ""
+menuOption = 0
 # Nouvelle position recu par le joystick
 menuPosition = 1
 # Valeur du code entré

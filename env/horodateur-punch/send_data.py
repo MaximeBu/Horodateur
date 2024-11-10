@@ -30,9 +30,6 @@ time.sleep(5)
 horodateur_punch = AliotObj("horodateur-punch")
 
 def menuPosition(data): 
-    # Get le dictionnaire de logs
-    logs = horodateur_punch.get_doc("/doc/logs")
-
     if menu_position == 1:
         # Ajoute le log dans le dictionnaire
         horodateur_punch.update_component("AffichageLCD", "Choisir de 1 à 4")
@@ -69,6 +66,7 @@ def buttonTouched(data):
 # Fonction qui change la valeur du joystick
 def joystickChange(data):
     joystick.set_y_axis_value(data.valeur)
+    
 
 # Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
 def buttonNextAction(data):
@@ -122,10 +120,7 @@ def start():
             led_state = led.get_led_state()
             led_color = led.get_led_color()
             code = main_utils.getCode()
-            led_color = led.get_led_color()
             user_n = user.getNom()
-            led_color = led.get_led_color()
-            user = user.getNom()
             
             # Affichage
             print(f"Joystick: {joystick_value}")
@@ -144,6 +139,8 @@ def start():
             if code != "":
                 print(f"Code: {code}")
 
+
+            
     
             # Envoi des données au serveur ALIVEcode
             horodateur_punch.update_doc({
@@ -158,7 +155,16 @@ def start():
                 "/doc/led/couleur": led_color,
                 "/doc/code": code
             })
-        
+
+            # Déroulement vers le bas du menu
+            if joystick_value <= 180 and joystick_value >= 170 and menu_position < 3:
+                newMenuPosition = menu_position + 1
+                main_utils.setMenuPosition(newMenuPosition)
+            # Déroulement vers le haut du menu
+            elif joystick_value >= 0 and joystick_value <= 10 and menu_position > 1:
+                newMenuPosition = menu_position - 1
+                main_utils.setMenuPosition(newMenuPosition)
+
             # Attente de 1 seconde
             time.sleep(1)
         except KeyboardInterrupt:
