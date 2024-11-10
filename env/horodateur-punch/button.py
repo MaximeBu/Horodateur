@@ -18,6 +18,15 @@ def get_buttons_state():
   return buttonNextState, buttonBackState
 
 
+def set_button_next_state():
+  global buttonNextState
+  buttonNextState = "Appuyé"
+
+def set_button_back_state():
+  global buttonBackState
+  buttonNextState = "Appuyé"
+
+
 # Fonction qui vérifie si le bouton de retour a été appuyé
 def button_back_pressed():
   global buttonBackState

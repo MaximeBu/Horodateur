@@ -86,7 +86,7 @@ def menuCode(data):
     })
     time.sleep(1)
 
-# Fonction activer lorsque un bouton touch est appuyé dans l'iterface Aliot
+# Fonction activée lorsque un bouton touch est appuyé dans l'iterface Aliot
 def buttonTouched(data):
     if menu_option == "":
         if data.numero == 1 or data.numero == 2 or data.numero == 3 or data.numero == 4:
@@ -94,11 +94,36 @@ def buttonTouched(data):
     else:
         if len(code) < 4:
             main_utils.setCode(code + str(data.numero))
+    
+    logs = horodateur_punch.get_doc("/doc/logs")
+    # Ajoute le log dans le dictionnaire
+    logs.append({
+        "Action": "Touche appuyé: " + str(data.numero)
+    })
 
 # Fonction qui change la valeur du joystick
 def joystickChange(data):
     joystick.set_y_axis_value(data.valeur)
 
+# Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
+def buttonNextAction(data):
+    button.set_button_next_state()
+
+    logs = horodateur_punch.get_doc("/doc/logs")
+    # Ajoute le log dans le dictionnaire
+    logs.append({
+        "Action": "Bouton next appuyé"
+    })
+
+# Fonction activée lorsque le bouton back est appuyé dans l'iterface Aliot
+def buttonBackAction(data):
+    button.buttonBack()
+
+    logs = horodateur_punch.get_doc("/doc/logs")
+    # Ajoute le log dans le dictionnaire
+    logs.append({
+        "Action": "Bouton back appuyé"
+    })
 
 def start():
     while True:
@@ -167,6 +192,8 @@ horodateur_punch.listen_doc(["/doc/menuPosition"], callback=menu_change)
 
 horodateur_punch.on_action_recv("touched", callback=buttonTouched)
 horodateur_punch.on_action_recv("joystick", callback=joystickChange)
+horodateur_punch.on_action_recv("boutonNext", callback=buttonNextAction)
+horodateur_punch.on_action_recv("boutonBack", callback=buttonBackAction)
 
 # Connection de l'objet au serveur ALIVEcode
 horodateur_punch.run()
