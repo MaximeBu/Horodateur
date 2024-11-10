@@ -1,4 +1,5 @@
 # Utilisateurs du système
+import code
 users = {
   "Maxime" : "1111",
   "Martin" : "2038",
@@ -6,12 +7,21 @@ users = {
   "Aysha" : "4290",
 }
 
+nom = ""
+
+# Fonction qui récupère le nom de l'utilisateur qui se connecte
+def getNom():
+  return nom
+
+# Fonction qui attribut le nom de l'utilisateur qui se connecte
+def setNom(newName):
+  global nom
+  nom = newName
+
 # Fonction de validation du code saisi
 def validate_user(code):
-  user = ""
   for nom, id in users.items():
     if id == code:
-      user = nom
+      setNom(nom)
       break
-  return user
 

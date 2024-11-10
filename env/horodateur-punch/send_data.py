@@ -7,6 +7,7 @@ import main_utils
 import button
 import buzzer
 import led
+import user
 
 from aliot.aliot_obj import AliotObj
 
@@ -20,6 +21,7 @@ buzzer_state = buzzer.get_buzzer_state()
 led_state = led.get_led_state()
 code = main_utils.getCode()
 led_color = main_utils.getLedColor()
+user = user.getNom()
 
 # Attente pour bien établir la communication avec le capteur
 time.sleep(5)
@@ -33,43 +35,22 @@ def menuPosition(data):
 
     if menu_position == 1:
         # Ajoute le log dans le dictionnaire
-        logs.append({
-            "ligne1": lcd.getTime() + lcd.getDate(),
-            "ligne2": "Choisir de 1 à 4"
-        })
+        horodateur_punch.update_component("AffichageLCD", "Choisir de 1 à 4")
 
     elif menu_position == 2:
         # Ajoute le log dans le dictionnaire
-        logs.append({
-            "ligne3": "1) Début de travail",
-            "ligne4": "2) Fin travail"
-        })
+        horodateur_punch.update_component("AffichageLCD", "1) Début de travail")
+        horodateur_punch.update_component("AffichageLCD", "2) Fin travail")
 
     elif menu_position == 3:
         # Ajoute le log dans le dictionnaire
-        logs.append({
-            "ligne1": "3) Début Pause",
-            "ligne2": "4) Fin Pause"
-        })
-
-    horodateur_punch.update_doc({
-        "/doc/logs": logs
-    })
+        horodateur_punch.update_component("AffichageLCD", "3) Début Pause")
+        horodateur_punch.update_component("AffichageLCD", "4) Fin Pause")
     time.sleep(1)
 
 def menuCode(data):
-    # Get le dictionnaire de logs
-    logs = horodateur_punch.get_doc("/doc/logs")
-        
     # Ajoute le log dans le dictionnaire
-    logs.append({
-        "code": "Code : ",
-        "numeros": "METTRE LE CODE DU USER AVEC LES BOUTONS"
-    })
-
-    horodateur_punch.update_doc({
-        "/doc/logs": logs
-    })
+    horodateur_punch.update_component("AffichageLCD", "Code: {code}")
     time.sleep(1)
 
 # Fonction activée lorsque un bouton touch est appuyé dans l'iterface Aliot
@@ -80,12 +61,10 @@ def buttonTouched(data):
     else:
         if len(code) < 4:
             main_utils.setCode(code + str(data.numero))
-    
-    logs = horodateur_punch.get_doc("/doc/logs")
+
     # Ajoute le log dans le dictionnaire
-    logs.append({
-        "Action": "Touche appuyé: " + str(data.numero)
-    })
+    horodateur_punch.update_component("AffichageLCD", "Touche appuyé: " + str(data.numero))
+    time.sleep(1)
 
 # Fonction qui change la valeur du joystick
 def joystickChange(data):
@@ -94,33 +73,41 @@ def joystickChange(data):
 # Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
 def buttonNextAction(data):
     button.set_button_next_state()
-
-    logs = horodateur_punch.get_doc("/doc/logs")
     # Ajoute le log dans le dictionnaire
-    logs.append({
-        "Action": "Bouton next appuyé"
-    })
+    horodateur_punch.update_component("AffichageLCD", "Bouton next appuyé")
 
 # Fonction activée lorsque le bouton back est appuyé dans l'iterface Aliot
 def buttonBackAction(data):
     button.set_button_back_state()
-
-    logs = horodateur_punch.get_doc("/doc/logs")
     # Ajoute le log dans le dictionnaire
-    logs.append({
-        "Action": "Bouton back appuyé"
-    })
+    horodateur_punch.update_component("AffichageLCD", "Bouton back appuyé")
+    time.sleep(1)
 
+# Fonction activée lorsque la lumière est allumée et rouge
 def sendError(data):
-    logs = horodateur_punch.get_doc("/doc/logs")
     # Ajoute le log dans le dictionnaire
-    logs.append({
-        "Message": "Erreur"
-    })
+    horodateur_punch.update_component("AffichageLCD", "Erreur")
+    time.sleep(1)
 
-# def sendSuccess(data):
+# Fonction activée lorsque la lumière est allumée et verte
+def sendSuccess(data):
+    horodateur_punch.update_component("AffichageLCD", nom)
+    if menu_option == 1:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "{nom} commence sa journée")
+    elif menu_option == 2:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "{nom} a finit sa journée")
+    elif menu_option == 3:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "{nom} prend sa pause")
+    elif menu_option == 4:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "{nom} a finit sa pause")
+    time.sleep(1)
+
     
-
+# Programme principal
 def start():
     while True:
         try:
@@ -136,6 +123,7 @@ def start():
             led_color = led.get_led_color()
             code = main_utils.getCode()
             led_color = main_utils.getLedColor()
+            user = user.getNom()
             
             # Affichage
             print(f"Joystick: {joystick_value}")
@@ -144,10 +132,15 @@ def start():
             print(f"État du buzzer: {buzzer_state}")
             print(f"État de la LED: {led_state}")
             print(f"Couleur de la LED: {led_color}")
-            print(f"Code: {code}")
 
             if touch != "":
                 print(f"Touche appuyé: {touch}")
+
+            if user != "":
+                print(f"Nom de l'utilisateur: {user}")
+
+            if code != "":
+                print(f"Code: {code}")
 
     
             # Envoi des données au serveur ALIVEcode
@@ -160,6 +153,7 @@ def start():
                 "/doc/bouton_back": buttonBack,
                 "/doc/buzzer": buzzer_state,
                 "/doc/led/led_state": led_state,
+                "/doc/led/couleur": led_color,
                 "/doc/code": code
             })
         
@@ -172,9 +166,8 @@ horodateur_punch.on_start(callback=start)
 # Appel de la fonction start une fois que l'objet se connecte au serveur
 horodateur_punch.on_action_recv("AffichageLCD", callback=menuPosition)
 horodateur_punch.on_action_recv("erreur", callback=sendError)
-#horodateur_punch.on_action_recv("succes", callback=sendSuccess)
-#horodateur_punch.on_action_recv("sendCode", callback=menuPosition)
-
+horodateur_punch.on_action_recv("succes", callback=sendSuccess)
+horodateur_punch.on_action_recv("sendCode", callback=menuCode)
 horodateur_punch.on_action_recv("touched", callback=buttonTouched)
 horodateur_punch.on_action_recv("joystick", callback=joystickChange)
 horodateur_punch.on_action_recv("boutonNext", callback=buttonNextAction)

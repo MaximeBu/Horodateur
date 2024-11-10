@@ -108,8 +108,9 @@ while True:
 
       # Si le bouton next est appuyé et que le code est remplit, le code est vérifé
       if boutonNext == "Appuyé" and len(code) == 4:
-        nom = user.validate_user(code)
-	# Si l'utilisateur n'existe pas, il y a erreur
+        user.validate_user(code)
+        nom = user.getNom()
+	      # Si l'utilisateur n'existe pas, il y a erreur
         if nom == "":
             led.red()
         # Si l'utilisateur existe, un message lui est affiché
@@ -118,6 +119,7 @@ while True:
           lcd.show_message(menuOption, nom)
           main_utils.setMenuOption("")
           lcd.show_menu_start()
+          user.setNom("")
         main_utils.setCode("")
 
     print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext, ", heure:", heure)
