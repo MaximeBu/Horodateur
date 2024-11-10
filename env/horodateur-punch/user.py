@@ -1,5 +1,4 @@
 # Utilisateurs du système
-import code
 users = {
   "Maxime" : "1111",
   "Martin" : "2038",
