@@ -31,7 +31,6 @@ horodateur_punch = AliotObj("horodateur-punch")
 
 def menuPosition(data): 
     # Get le dictionnaire de logs
-    logs = horodateur_punch.get_doc("/doc/logs")
 
     if menu_position == 1:
         # Ajoute le log dans le dictionnaire
