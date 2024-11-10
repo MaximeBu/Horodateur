@@ -30,8 +30,6 @@ time.sleep(5)
 horodateur_punch = AliotObj("horodateur-punch")
 
 def menuPosition(data): 
-    # Get le dictionnaire de logs
-
     if menu_position == 1:
         # Ajoute le log dans le dictionnaire
         horodateur_punch.update_component("AffichageLCD", "Choisir de 1 à 4")
@@ -49,25 +47,25 @@ def menuPosition(data):
 
 def menuCode(data):
     # Ajoute le log dans le dictionnaire
-    horodateur_punch.update_component("AffichageLCD", "Code: {code}")
+    horodateur_punch.update_component("AffichageLCD", "Code: "+ code)
     time.sleep(1)
 
 # Fonction activée lorsque un bouton touch est appuyé dans l'iterface Aliot
 def buttonTouched(data):
     if menu_option == "":
-        if data.numero == 1 or data.numero == 2 or data.numero == 3 or data.numero == 4:
-            main_utils.setMenuOption(data.numero)
+        if data["numero"] == 1 or data["numero"] == 2 or data["numero"] == 3 or data["numero"] == 4:
+            main_utils.setMenuOption(data["numero"])
     else:
         if len(code) < 4:
-            main_utils.setCode(code + str(data.numero))
+            main_utils.setCode(code + str(data["numero"]))
 
     # Ajoute le log dans le dictionnaire
-    horodateur_punch.update_component("AffichageLCD", "Touche appuyé: " + str(data.numero))
+    horodateur_punch.update_component("AffichageLCD", "Touche appuyé: " + str(data["numero"]))
     time.sleep(1)
 
 # Fonction qui change la valeur du joystick
 def joystickChange(data):
-    joystick.set_y_axis_value(data.valeur)
+    joystick.set_y_axis_value(data["valeur"])
 
 # Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
 def buttonNextAction(data):
