@@ -14,7 +14,7 @@ touch_numero_9 = Button(13)
 touch_numero_0 = Button(19)
 
 # Valeur du bouton touché
-activeTouchv= ""
+activeTouch= ""
 
 
 # Function called when the sensor is touched

@@ -34,7 +34,7 @@ def read_from_serial():
       if ser.in_waiting > 0:
         # Attribution de la valeur
         yAxis = read_data()
-        set_y_axis_value(yAxisValue)
+        set_y_axis_value(yAxis)
 
   except KeyboardInterrupt:
     print("Exiting...")
