@@ -124,7 +124,7 @@ def start():
             led_color = led.get_led_color()
             user_n = user.getNom()
             led_color = led.get_led_color()
-            user = user.getNom()
+            user_n = user.getNom()
             
             # Affichage
             print(f"Joystick: {joystick_value}")
