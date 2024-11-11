@@ -1,5 +1,6 @@
 # Documentation: https://alivecode.ca/docs/aliot
 import time
+import led
 import lcd
 import joystick
 import touch
@@ -56,16 +57,18 @@ def buttonTouched(data):
         if data["numero"] == 1 or data["numero"] == 2 or data["numero"] == 3 or data["numero"] == 4:
             main_utils.setMenuOption(data["numero"])
     else:
-        if len(code) < 4:
-            main_utils.setCode(code + str(data["numero"]))
+        if data["numero"] != "" and len(code) < 4:
+            newCode = code + str(data["numero"])
+            main_utils.setCode(newCode)
 
     # Ajoute le log dans le dictionnaire
     horodateur_punch.update_component("AffichageLCD", "Touche appuyé: " + str(data["numero"]))
+    horodateur_punch.update_component("Mybuzzer", 500)
     time.sleep(1)
 
 # Fonction qui change la valeur du joystick
 def joystickChange(data):
-    joystick.set_y_axis_value(data["valeur"])
+    joystick.set_y_axis_value(data.value)
 
 # Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
 def buttonNextAction(data):
@@ -138,8 +141,6 @@ def start():
             if code != "":
                 print(f"Code: {code}")
 
-
-            
     
             # Envoi des données au serveur ALIVEcode
             horodateur_punch.update_doc({
@@ -163,6 +164,37 @@ def start():
             elif joystick_value >= 0 and joystick_value <= 10 and menu_position > 1:
                 newMenuPosition = menu_position - 1
                 main_utils.setMenuPosition(newMenuPosition)
+
+            # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
+            if buttonBack == "Appuyé" and code == "":
+                main_utils.setMenuOption(0)
+
+            # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
+            elif buttonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
+                newCode = code[:len(code)-1]
+                main_utils.setCode(newCode)
+
+            # Si le bouton next est appuyé et que le code n'est pas complet, la lumière rouge s'allume et le code se réinitialise
+            if buttonNext == "Appuyé" and len(code) < 4:
+                led.red()
+                led.get_led_color()
+
+            # Si le bouton next est appuyé et que le code est remplit, le code est vérifé
+            if buttonNext == "Appuyé" and len(code) == 4:
+                user.validate_user(code)
+                led.get_led_color()
+                # Si l'utilisateur n'existe pas, il y a erreur
+                if user_n == "":
+                    led.red()
+                    led.get_led_color()
+                    led.turn_off()
+                # Si l'utilisateur existe, un message lui est affiché
+                else:
+                    led.green()
+                    led.get_led_color()
+                    main_utils.setMenuOption(0)
+                    user.setNom("")
+                    main_utils.setCode("")
 
             # Attente de 1 seconde
             time.sleep(1)

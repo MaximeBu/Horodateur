@@ -24,7 +24,7 @@ def set_button_next_state():
 
 def set_button_back_state():
   global buttonBackState
-  buttonNextState = "Appuyé"
+  buttonBackState = "Appuyé"
 
 
 # Fonction qui vérifie si le bouton de retour a été appuyé
