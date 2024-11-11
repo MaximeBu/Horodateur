@@ -55,7 +55,7 @@ while True:
     # Récupération du code de l'employé
     code = main_utils.get_code()
 
-    if menuOption == "":
+    if menuOption == 0:
       # Changement d'heure dynamiquement sur la page pricipale
       if heure != lastTime and menuPosition == 1:
         lcd.show_menu_start()
@@ -94,7 +94,7 @@ while True:
 
       # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
       if boutonBack == "Appuyé" and code == "":
-        main_utils.setMenuOption("")
+        main_utils.setMenuOption(0)
         lcd.show_menu_start()
       # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
       elif boutonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
@@ -117,7 +117,7 @@ while True:
         else:
           led.green()
           lcd.show_message(menuOption, nom)
-          main_utils.setMenuOption("")
+          main_utils.setMenuOption(0)
           lcd.show_menu_start()
           user.setNom("")
         main_utils.setCode("")
