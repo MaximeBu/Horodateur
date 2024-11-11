@@ -52,7 +52,7 @@ def menuCode(data):
 
 # Fonction activée lorsque un bouton touch est appuyé dans l'iterface Aliot
 def buttonTouched(data):
-    if menu_option == "":
+    if menu_option == 0:
         if data["numero"] == 1 or data["numero"] == 2 or data["numero"] == 3 or data["numero"] == 4:
             main_utils.setMenuOption(data["numero"])
     else:
@@ -91,16 +91,16 @@ def sendSuccess(data):
     horodateur_punch.update_component("AffichageLCD", nom)
     if menu_option == 1:
         # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "{nom} commence sa journée")
+        horodateur_punch.update_component("AffichageLCD", nom + "commence sa journée")
     elif menu_option == 2:
         # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "{nom} a finit sa journée")
+        horodateur_punch.update_component("AffichageLCD", nom + " a finit sa journée")
     elif menu_option == 3:
         # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "{nom} prend sa pause")
+        horodateur_punch.update_component("AffichageLCD", nom + " prend sa pause")
     elif menu_option == 4:
         # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "{nom} a finit sa pause")
+        horodateur_punch.update_component("AffichageLCD", nom + " a finit sa pause")
     time.sleep(1)
 
     
