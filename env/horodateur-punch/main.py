@@ -46,9 +46,10 @@ def start():
       # Activation des capteurs touch
       touch.run()
       # Récupération du statut de la led
-      ledState = led.get_led_state()
+      led_state = led.get_led_state()
+      led_color = led.get_led_color()
       # Récupération du numéro du capteur touch appuyé
-      touchValue = touch.get_touch_number()
+      touch_num = touch.get_touch_number()
       # Réinitialisation de la valeur activeTouch dans le fichier touch
       touch.set_touch_number()
       # Récupération de l'état du buzzer
@@ -57,72 +58,72 @@ def start():
       button.button_back_pressed()
       button.button_next_pressed()
       # Récupération de l'état des boutons
-      boutonNext, boutonBack = button.get_buttons_state()
+      bouton_next, bouton_back = button.get_buttons_state()
       # Récupération de la valeur de l'option choisit
-      menuOption = main_utils.getMenuOption()
+      menu_option = main_utils.getMenuOption()
       # Récupération de la valeur de la position du menu active
-      menuPosition = main_utils.getMenuPosition()
+      menu_position = main_utils.getMenuPosition()
       # Récupération du code de l'employé
       code = main_utils.get_code()
       # Récupération du nom de l'employé
       nom = user.getNom()
 
-      if menuOption == 0:
+      if menu_option == 0:
         # Changement d'heure dynamiquement sur la page pricipale
         if heure != lastTime and menuPosition == 1:
           lcd.show_menu_start()
           lastTime = heure
 
         # Récupération de la valeur de l'axe y du joystick
-        J = joystick.get_y_axis_value()
+        joystick_value = joystick.get_y_axis_value()
 
         # Choix du menu
-        if touchValue == 1 or touchValue == 2 or touchValue == 3 or touchValue == 4:
-          main_utils.setMenuOption(touchValue)
+        if touch_num == 1 or touch_num == 2 or touch_num == 3 or touch_num == 4:
+          main_utils.setMenuOption(touch_num)
 
         # Déroulement vers le bas du menu
-        if J <= 180 and J >= 170 and menuPosition < 3:
-          newMenuPosition = menuPosition + 1
+        if joystick_value <= 180 and joystick_value >= 170 and menu_position < 3:
+          newMenuPosition = menu_position + 1
           main_utils.setMenuPosition(newMenuPosition)
         # Déroulement vers le haut du menu
-        elif J >= 0 and J <= 10 and menuPosition > 1:
-          newMenuPosition = menuPosition - 1
+        elif joystick_value >= 0 and joystick_value <= 10 and menuPosition > 1:
+          newMenuPosition = menu_position - 1
           main_utils.setMenuPosition(newMenuPosition)
 
         # Actualisation de la page du menu
-        if menuPosition != lastMenuPosition:
-          lastMenuPosition = menuPosition
+        if menu_position != lastMenuPosition:
+          lastMenuPosition = menu_position
           # Changement de l'affichage
-          lcd.show_menu(menuPosition)
+          lcd.show_menu(menu_position)
 
       else:
         # Affichage de l'écran demandant la saisie du code de l'employé
         lcd.show_code_screen(code)
 
         # Si une touche est appuyé, le numéro est affiché
-        if touchValue != "" and len(code) < 4:
-          newCode = code + str(touchValue)
+        if touch_num != "" and len(code) < 4:
+          newCode = code + str(touch_num)
           main_utils.setCode(newCode)
 
         # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
-        if boutonBack == "Appuyé" and code == "":
+        if bouton_back == "Appuyé" and code == "":
           main_utils.setMenuOption(0)
           lcd.show_menu_start()
         # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
-        elif boutonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
+        elif bouton_back == "Appuyé" and len(code) < 5 and len(code) > 0:
           newCode = code[:len(code)-1]
           main_utils.setCode(newCode)
 
         # Si le bouton next est appuyé et que le code n'est pas complet, la lumière rouge s'allume et le code se réinitialise
-        if boutonNext == "Appuyé" and len(code) < 4:
+        if bouton_next == "Appuyé" and len(code) < 4:
           led.red()
           main_utils.setCode("")
 
         # Si le bouton next est appuyé et que le code est remplit, le code est vérifé
-        if boutonNext == "Appuyé" and len(code) == 4:
+        if bouton_next == "Appuyé" and len(code) == 4:
           user.validate_user(code)
           nom = user.getNom()
-	        # Si l'utilisateur n'existe pas, il y a erreur
+          # Si l'utilisateur n'existe pas, il y a erreur
           if nom == "":
               led.red()
           # Si l'utilisateur existe, un message lui est affiché
@@ -141,8 +142,8 @@ def start():
       print(f"État du buzzer: {buzzer_state}")
       print(f"État de la LED: {led_state}")
       print(f"Couleur de la LED: {led_color}")
-      print(f"État du bouton next: {buttonNext}")
-      print(f"État du bouton back: {buttonBack}")
+      print(f"État du bouton next: {button_next}")
+      print(f"État du bouton back: {button_back}")
       print(f"Touche appuyé: {touch_num}")
       print(f"Nom de l'utilisateur: {user_n}")
       print(f"Code: {code}")
@@ -154,8 +155,8 @@ def start():
         "/doc/menu_position": menu_position, 
         "/doc/menu_option": menu_option,
         "/doc/touch": touch_num,
-        "/doc/bouton_next": buttonNext,
-        "/doc/bouton_back": buttonBack,
+        "/doc/bouton_next": button_next,
+        "/doc/bouton_back": button_back,
         "/doc/buzzer": buzzer_state,
         "/doc/led/led_state": led_state,
         "/doc/led/couleur": led_color,
