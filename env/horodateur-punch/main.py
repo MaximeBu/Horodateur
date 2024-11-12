@@ -31,10 +31,67 @@ led.turn_off()
 # loop until manually stopped
 
 # Attente pour bien établir la communication avec le capteur
-time.sleep(5)
+sleep(5)
 
 # Création de l'objet à partir du fichier de configuration
 horodateur_punch = AliotObj("horodateur-punch")
+
+# Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
+def buttonNextAction(data):
+    button.set_button_next_state()
+    # Ajoute le log dans le dictionnaire
+    horodateur_punch.update_component("AffichageLCD", "Bouton next appuyé")
+
+# Fonction activée lorsque le bouton back est appuyé dans l'iterface Aliot
+def buttonBackAction(data):
+    button.set_button_back_state()
+    # Ajoute le log dans le dictionnaire
+    horodateur_punch.update_component("AffichageLCD", "Bouton back appuyé")
+    sleep(1)
+
+# Fonction activée lorsque la lumière est allumée et rouge
+def sendError(data):
+    # Ajoute le log dans le dictionnaire
+    horodateur_punch.update_component("AffichageLCD", "Erreur")
+    sleep(1)
+
+# Fonction activée lorsque la lumière est allumée et verte
+def sendSuccess(data):
+    horodateur_punch.update_component("AffichageLCD", nom)
+    if main_utils.getMenuOption() == 1:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", nom + "commence sa journée")
+    elif main_utils.getMenuOption() == 2:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", nom + " a finit sa journée")
+    elif main_utils.getMenuOption() == 3:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", nom + " prend sa pause")
+    elif main_utils.getMenuOption() == 4:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", nom + " a finit sa pause")
+    sleep(1)
+
+def menuPosition(data):
+    if main_utils.getMenuPosition() == 1:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "Choisir de 1 à 4")
+
+    elif main_utils.getMenuPosition() == 2:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "1) Début de travail")
+        horodateur_punch.update_component("AffichageLCD", "2) Fin travail")
+
+    elif main_utils.getMenuPosition() == 3:
+        # Ajoute le log dans le dictionnaire
+        horodateur_punch.update_component("AffichageLCD", "3) Début Pause")
+        horodateur_punch.update_component("AffichageLCD", "4) Fin Pause")
+    sleep(1)
+
+def menuCode(data):
+    # Ajoute le log dans le dictionnaire
+    horodateur_punch.update_component("AffichageLCD", "Code: "+ code)
+    sleep(1)
 
 def start():
   while True:
@@ -129,7 +186,7 @@ def start():
           # Si l'utilisateur existe, un message lui est affiché
           else:
             led.green()
-            lcd.show_message(menuOption, nom)
+            lcd.show_message(menu_option, nom)
             main_utils.setMenuOption(0)
             lcd.show_menu_start()
             user.setNom("")
@@ -142,10 +199,10 @@ def start():
       print(f"État du buzzer: {buzzer_state}")
       print(f"État de la LED: {led_state}")
       print(f"Couleur de la LED: {led_color}")
-      print(f"État du bouton next: {button_next}")
-      print(f"État du bouton back: {button_back}")
+      print(f"État du bouton next: {bouton_next}")
+      print(f"État du bouton back: {bouton_back}")
       print(f"Touche appuyé: {touch_num}")
-      print(f"Nom de l'utilisateur: {user_n}")
+      print(f"Nom de l'utilisateur: {nom}")
       print(f"Code: {code}")
 
       # print(inputPin, ":", J, ", Position du menu:", menuPosition, ", Option du menu:", menuOption, ", Led:", ledState, ", Code:", code, ", Buzzer:", buzzer_state, ", Bouton de retour:", boutonBack, ", Bouton de confirmation:", boutonNext, ", heure:", heure)
@@ -155,8 +212,8 @@ def start():
         "/doc/menu_position": menu_position, 
         "/doc/menu_option": menu_option,
         "/doc/touch": touch_num,
-        "/doc/bouton_next": button_next,
-        "/doc/bouton_back": button_back,
+        "/doc/bouton_next": bouton_next,
+        "/doc/bouton_back": bouton_back,
         "/doc/buzzer": buzzer_state,
         "/doc/led/led_state": led_state,
         "/doc/led/couleur": led_color,
@@ -166,62 +223,7 @@ def start():
     except KeyboardInterrupt:
       break  # stop the while loop
 
-# Fonction activée lorsque le bouton next est appuyé dans l'iterface Aliot
-def buttonNextAction(data):
-    button.set_button_next_state()
-    # Ajoute le log dans le dictionnaire
-    horodateur_punch.update_component("AffichageLCD", "Bouton next appuyé")
 
-# Fonction activée lorsque le bouton back est appuyé dans l'iterface Aliot
-def buttonBackAction(data):
-    button.set_button_back_state()
-    # Ajoute le log dans le dictionnaire
-    horodateur_punch.update_component("AffichageLCD", "Bouton back appuyé")
-    time.sleep(1)
-
-# Fonction activée lorsque la lumière est allumée et rouge
-def sendError(data):
-    # Ajoute le log dans le dictionnaire
-    horodateur_punch.update_component("AffichageLCD", "Erreur")
-    time.sleep(1)
-
-# Fonction activée lorsque la lumière est allumée et verte
-def sendSuccess(data):
-    horodateur_punch.update_component("AffichageLCD", nom)
-    if main_utils.getMenuOption() == 1:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", nom + "commence sa journée")
-    elif main_utils.getMenuOption() == 2:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", nom + " a finit sa journée")
-    elif main_utils.getMenuOption() == 3:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", nom + " prend sa pause")
-    elif main_utils.getMenuOption() == 4:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", nom + " a finit sa pause")
-    time.sleep(1)
-
-def menuPosition(data):
-    if main_utils.getMenuPosition() == 1:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "Choisir de 1 à 4")
-
-    elif main_utils.getMenuPosition() == 2:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "1) Début de travail")
-        horodateur_punch.update_component("AffichageLCD", "2) Fin travail")
-
-    elif main_utils.getMenuPosition() == 3:
-        # Ajoute le log dans le dictionnaire
-        horodateur_punch.update_component("AffichageLCD", "3) Début Pause")
-        horodateur_punch.update_component("AffichageLCD", "4) Fin Pause")
-    time.sleep(1)
-
-def menuCode(data):
-    # Ajoute le log dans le dictionnaire
-    horodateur_punch.update_component("AffichageLCD", "Code: "+ code)
-    time.sleep(1)
 
 horodateur_punch.on_start(callback=start)
 # Appel de la fonction start une fois que l'objet se connecte au serveur
