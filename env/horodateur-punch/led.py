@@ -51,7 +51,6 @@ def red():
   ledState = True
   ledColor = "rouge"
   sleep(2)
-  turn_off()
 
 
 # Fonction pour allumer une lumière verte
@@ -65,4 +64,3 @@ def green():
   ledState = True
   ledColor = "vert"
   sleep(2)
-  turn_off()
