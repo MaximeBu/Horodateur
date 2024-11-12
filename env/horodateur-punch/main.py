@@ -233,7 +233,7 @@ horodateur_punch.on_action_recv("erreur", callback=sendError)
 horodateur_punch.on_action_recv("succes", callback=sendSuccess)
 horodateur_punch.on_action_recv("sendCode", callback=menuCode)
 horodateur_punch.on_action_recv("touched", callback=lambda data: touch.touched(data["numero"]))
-# horodateur_punch.on_action_recv("joystick", callback=lambda data: joystick.set_y_axis_value(data["valeur"]))
+horodateur_punch.on_action_recv("joystick", callback=lambda data: joystick.set_y_axis_value(data["valeur"]))
 horodateur_punch.on_action_recv("boutonNext", callback=buttonNextAction)
 horodateur_punch.on_action_recv("boutonBack", callback=buttonBackAction)
 
