@@ -121,13 +121,13 @@ def start():
       # Récupération de la valeur de la position du menu active
       menu_position = main_utils.getMenuPosition()
       # Récupération du code de l'employé
-      code = main_utils.get_code()
+      code = main_utils.getCode()
       # Récupération du nom de l'employé
       nom = user.getNom()
 
       if menu_option == 0:
         # Changement d'heure dynamiquement sur la page pricipale
-        if heure != lastTime and menuPosition == 1:
+        if heure != lastTime and menu_position == 1:
           lcd.show_menu_start()
           lastTime = heure
 
@@ -143,7 +143,7 @@ def start():
           newMenuPosition = menu_position + 1
           main_utils.setMenuPosition(newMenuPosition)
         # Déroulement vers le haut du menu
-        elif joystick_value >= 0 and joystick_value <= 10 and menuPosition > 1:
+        elif joystick_value >= 0 and joystick_value <= 10 and menu_position > 1:
           newMenuPosition = menu_position - 1
           main_utils.setMenuPosition(newMenuPosition)
 
