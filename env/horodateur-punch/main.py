@@ -94,6 +94,7 @@ def menuCode(data):
     sleep(1)
 
 def start():
+  global lastTime, heure
   while True:
     try:
       temps = lcd.getTime()
