@@ -1,7 +1,7 @@
 # Importations
 import serial
 from time import sleep
-# import cam
+import cam
 import joystick
 import lcd
 import buzzer
@@ -26,7 +26,6 @@ lastTime = heure
 
 # Affichage de  la page menu initiale
 lcd.show_menu_start()
-led.turn_off()
 
 # loop until manually stopped
 
@@ -106,17 +105,19 @@ def start():
       # Récupération du statut de la led
       led_state = led.get_led_state()
       led_color = led.get_led_color()
-      # Récupération du numéro du capteur touch appuyé
-      touch_num = touch.get_touch_number()
-      # Réinitialisation de la valeur activeTouch dans le fichier touch
-      touch.set_touch_number()
-      # Récupération de l'état du buzzer
-      buzzer_state = buzzer.get_buzzer_state()
       # Activation des boutons
       button.button_back_pressed()
       button.button_next_pressed()
+      # Récupération du numéro du capteur touch appuyé
+      touch_num = touch.get_touch_number()
       # Récupération de l'état des boutons
       buttonNext, buttonBack = button.get_buttons_state()
+      # Réinitialisation de la valeur activeTouch dans le fichier touch
+      touch.set_touch_number()
+      button.set_buttons()
+      led.turn_off()
+      # Récupération de l'état du buzzer
+      buzzer_state = buzzer.get_buzzer_state()
       # Récupération de la valeur de l'option choisit
       menu_option = main_utils.getMenuOption()
       # Récupération de la valeur de la position du menu active
@@ -164,21 +165,21 @@ def start():
           main_utils.setCode(newCode)
 
         # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
-        if buttonBack == "Appuyé" and code == "":
+        if buttonBack == "Appuye" and code == "":
           main_utils.setMenuOption(0)
           lcd.show_menu_start()
         # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
-        elif buttonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
+        elif buttonBack == "Appuye" and len(code) < 5 and len(code) > 0:
           newCode = code[:len(code)-1]
           main_utils.setCode(newCode)
 
         # Si le bouton next est appuyé et que le code n'est pas complet, la lumière rouge s'allume et le code se réinitialise
-        if buttonNext == "Appuyé" and len(code) < 4:
+        if buttonNext == "Appuye" and len(code) < 4:
           led.red()
           main_utils.setCode("")
 
         # Si le bouton next est appuyé et que le code est remplit, le code est vérifé
-        if buttonNext == "Appuyé" and len(code) == 4:
+        if buttonNext == "Appuye" and len(code) == 4:
           user.validate_user(code)
           nom = user.getNom()
           # Si l'utilisateur n'existe pas, il y a erreur
@@ -216,8 +217,8 @@ def start():
         "/doc/bouton_next": buttonNext,
         "/doc/bouton_back": buttonBack,
         "/doc/buzzer": buzzer_state,
-        "/doc/led/led_state": led_state,
-        "/doc/led/couleur": led_color,
+        "/doc/led/led_state": led.get_led_state(),
+        "/doc/led/couleur": led.get_led_color(),
         "/doc/code": code
       })
       sleep(0.2)
@@ -233,9 +234,8 @@ horodateur_punch.on_action_recv("erreur", callback=sendError)
 horodateur_punch.on_action_recv("succes", callback=sendSuccess)
 horodateur_punch.on_action_recv("sendCode", callback=menuCode)
 horodateur_punch.on_action_recv("touched", callback=lambda data: touch.touched(data["numero"]))
-horodateur_punch.on_action_recv("joystick", callback=lambda data: joystick.set_y_axis_value(data["valeur"]))
-horodateur_punch.on_action_recv("boutonNext", callback=buttonNextAction)
-horodateur_punch.on_action_recv("boutonBack", callback=buttonBackAction)
+horodateur_punch.on_action_recv("boutonNext", callback=lambda data: buttonNextAction(data))
+horodateur_punch.on_action_recv("boutonBack", callback=lambda data: buttonBackAction(data))
 
 
 # Connection de l'objet au serveur ALIVEcode
