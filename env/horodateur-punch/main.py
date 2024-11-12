@@ -116,7 +116,7 @@ def start():
       button.button_back_pressed()
       button.button_next_pressed()
       # Récupération de l'état des boutons
-      bouton_next, bouton_back = button.get_buttons_state()
+      buttonNext, buttonBack = button.get_buttons_state()
       # Récupération de la valeur de l'option choisit
       menu_option = main_utils.getMenuOption()
       # Récupération de la valeur de la position du menu active
@@ -164,21 +164,21 @@ def start():
           main_utils.setCode(newCode)
 
         # Si le bouton back est appuyé et que le code est vide, l'écran affiche le menu
-        if bouton_back == "Appuyé" and code == "":
+        if buttonBack == "Appuyé" and code == "":
           main_utils.setMenuOption(0)
           lcd.show_menu_start()
         # Si le bouton back est appuyé et que le code possède des chiffres, le dernier chiffre est supprimé
-        elif bouton_back == "Appuyé" and len(code) < 5 and len(code) > 0:
+        elif buttonBack == "Appuyé" and len(code) < 5 and len(code) > 0:
           newCode = code[:len(code)-1]
           main_utils.setCode(newCode)
 
         # Si le bouton next est appuyé et que le code n'est pas complet, la lumière rouge s'allume et le code se réinitialise
-        if bouton_next == "Appuyé" and len(code) < 4:
+        if buttonNext == "Appuyé" and len(code) < 4:
           led.red()
           main_utils.setCode("")
 
         # Si le bouton next est appuyé et que le code est remplit, le code est vérifé
-        if bouton_next == "Appuyé" and len(code) == 4:
+        if buttonNext == "Appuyé" and len(code) == 4:
           user.validate_user(code)
           nom = user.getNom()
           # Si l'utilisateur n'existe pas, il y a erreur
@@ -200,8 +200,8 @@ def start():
       print(f"État du buzzer: {buzzer_state}")
       print(f"État de la LED: {led_state}")
       print(f"Couleur de la LED: {led_color}")
-      print(f"État du bouton next: {bouton_next}")
-      print(f"État du bouton back: {bouton_back}")
+      print(f"État du bouton next: {buttonNext}")
+      print(f"État du bouton back: {buttonBack}")
       print(f"Touche appuyé: {touch_num}")
       print(f"Nom de l'utilisateur: {nom}")
       print(f"Code: {code}")
@@ -213,8 +213,8 @@ def start():
         "/doc/menu_position": menu_position, 
         "/doc/menu_option": menu_option,
         "/doc/touch": touch_num,
-        "/doc/bouton_next": bouton_next,
-        "/doc/bouton_back": bouton_back,
+        "/doc/bouton_next": buttonNext,
+        "/doc/bouton_back": buttonBack,
         "/doc/buzzer": buzzer_state,
         "/doc/led/led_state": led_state,
         "/doc/led/couleur": led_color,
