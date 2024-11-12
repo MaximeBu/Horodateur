@@ -8,9 +8,9 @@ buttonBack = Button(17)
 buttonNext = Button(27)
 
 # État du bouton back
-buttonBackState = None
+buttonBackState = ""
 # État du bouton next
-buttonNextState = None
+buttonNextState = ""
 
 
 # Fonction de récupération de l'état des boutons
