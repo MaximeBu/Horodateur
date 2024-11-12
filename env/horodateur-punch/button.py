@@ -17,25 +17,26 @@ buttonNextState = ""
 def get_buttons_state():
   return buttonNextState, buttonBackState
 
-
 def set_button_next_state():
   global buttonNextState
-  buttonNextState = "Appuyé"
+  buttonNextState = "Appuye"
 
 def set_button_back_state():
   global buttonBackState
-  buttonBackState = "Appuyé"
+  buttonBackState = "Appuye"
 
+def set_buttons()
+  global buttonBackState, buttonNextState 
+  buttonBackState = ""
+  buttonNextState = ""
 
 # Fonction qui vérifie si le bouton de retour a été appuyé
 def button_back_pressed():
   global buttonBackState
   # Si le bouton est appuyé, on change l'état du bouton
   if buttonBack.is_pressed:
-    buttonBackState = "Appuyé"
-    print("Bouton de retour appuyé")
-  else:
-    buttonBackState = None
+    buttonBackState = "Appuye"
+    print("Bouton de retour appuye")
 
 
 # Fonction qui vérifie si le bouton de confirmation a été appuyé
@@ -43,7 +44,5 @@ def button_next_pressed():
   global buttonNextState
   # Si le bouton est appuyé, on change l'état du bouton
   if buttonNext.is_pressed:
-    buttonNextState = "Appuyé"
-    print("Bouton de confirmation appuyé")
-  else:
-    buttonNextState = None
+    buttonNextState = "Appuye"
+    print("Bouton de confirmation appuye")
