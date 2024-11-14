@@ -1,9 +1,9 @@
 # Utilisateurs du système
 users = {
-  "Maxime" : "1111",
-  "Martin" : "2038",
-  "Thao" : "9210",
-  "Aysha" : "4290",
+  "Maxime Bureau" : "1111",
+  "Martin Ndjiya" : "2038",
+  "Thao Chi Tran" : "9210",
+  "Aysha Hossain" : "4290",
 }
 
 nom = ""
